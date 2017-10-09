@@ -2,8 +2,6 @@
 .idea
 
 #docs files
-docs/Makefile
-docs/make.bat
 docs/_build
 
 # Byte-compiled / optimized / DLL files
