@@ -1,8 +1,39 @@
+"""
+Author: Vladimir Ilievski <ilievski.vladimir@live.com>
+
+"""
+
 from rl.agents.dqn import DQNAgent
 
 
-class GOChatBotDQNAgent(DQNAgent):
-    """ Class for the Goal-Oriented Chatbots with a DQN-based policy learning.
+class GOAgentInterface():
+    """
+    Abstract Base Class serving as an interface for all GO agents.
+    
+    # Class members:
+        - current_turn_nb: the number of the current dialogue turn.
+        - history: a list of the agent conversation history.
+    """
+
+    def __init__(self):
+        self.current_turn_nb = 0
+        self.history = []
+
+    def initialize(self):
+        """
+        Method for initializing the GO agent.
+        
+        :return: None
+        """
+
+        self.current_turn_nb = 0
+        self.history = []
+
+
+
+
+class GODQNAgent(DQNAgent, GOAgentInterface):
+    """ Class for the Goal-Oriented agents with a DQN-based policy learning.
     
     This class is extending the class AbstractDQNAgent from keras-rl framework.
     This type of DQN agent should learn the policies of a dialogue in a given environment.
@@ -17,7 +48,7 @@ class GOChatBotDQNAgent(DQNAgent):
     - `layers`
     
     
-    # Arguments
+    # Class members:
     
     From [Agent](#agent) class:
         - processor (`Processor` instance): See [Processor](#processor) for details.
@@ -41,11 +72,16 @@ class GOChatBotDQNAgent(DQNAgent):
         - enable_double_dqn: To enable the Double DQN technique. By default is on.
         - enable_dueling_network: To enble the Dueling DQN technique. Be default is off.
         - dueling_type: If the dueling is on, what type of it. The default is average.
+        
+    Own:
+        
     
     """
 
     def __init__(self, *args, **kwargs):
-        super(GOChatBotDQNAgent).__init__(*args, **kwargs)
+        super(GODQNAgent).__init__(*args, **kwargs)
+
+
 
 
 
