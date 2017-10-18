@@ -47,3 +47,23 @@ NLU_PATH_KEY = "nlu_path"
 
 # key for specifying the path to the nlg unit
 NLG_PATH_KEY = "nlg_path"
+
+# key for specifying the intent (act) of the dialogue turn
+DIA_ACT_KEY = "diaact"
+# key for specifying an inform slot
+INFORM_SLOT_KEY = "inform_slot"
+# key for specifying a requested slot
+REQUEST_SLOT_KEY = "request_slot"
+# key for specifying a proposed slot
+PROPOSED_SLOT_KEY = "proposed_slot"
+# key for specifying an agent requested slot
+AGENT_REQUESTED_SLOT_KEY = "agent_request_slots"
+
+# key for specifying a path to the knowledge base
+KB_PATH_KEY = "kb_path"
+# key for specifying a kb querying result where all of the constraints were matched
+KB_MATCHING_ALL_CONSTRAINTS_KEY="matching_all_constraints"
+
+
+# key for specifying the maximal number of dialogue turns
+MAX_NB_TURNS = "max_nb_turns"

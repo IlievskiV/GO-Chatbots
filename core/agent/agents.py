@@ -30,8 +30,6 @@ class GOAgentInterface():
         self.history = []
 
 
-
-
 class GODQNAgent(DQNAgent, GOAgentInterface):
     """ Class for the Goal-Oriented agents with a DQN-based policy learning.
     
@@ -72,17 +70,10 @@ class GODQNAgent(DQNAgent, GOAgentInterface):
         - enable_double_dqn: To enable the Double DQN technique. By default is on.
         - enable_dueling_network: To enble the Dueling DQN technique. Be default is off.
         - dueling_type: If the dueling is on, what type of it. The default is average.
-        
-    Own:
+    Own: 
         
     
     """
 
     def __init__(self, *args, **kwargs):
         super(GODQNAgent).__init__(*args, **kwargs)
-
-
-
-
-
-

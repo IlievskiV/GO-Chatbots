@@ -18,13 +18,13 @@ class GOUser:
         - goal: the goal of the user
     """
 
-    def __init__(self, id=None, simulation_mode=None, goal=None):
+    def __init__(self, id=None, simulation_mode=None, goal_set=None):
         # Initialize the class members
         self.id = id
         self.current_turn_nb = 0
         self.history = []
         self.simulation_mode = simulation_mode
-        self.goal = goal
+        self.goal_set = goal_set
 
     def reset(self):
         """
@@ -51,8 +51,8 @@ class GORealUser(GOUser):
     # Class members:
     """
 
-    def __init__(self, id=None, goal=None):
-        super(GORealUser, self).__init__(id, const.NL_SIMULATION_MODE, goal)
+    def __init__(self, id=None, goal_set=None):
+        super(GORealUser, self).__init__(id, const.NL_SIMULATION_MODE, goal_set)
 
     def reset(self):
         # TODO
@@ -75,8 +75,8 @@ class GOSimulatedUser(GOUser):
         - act_set: the set of all acts (intents) in the dialogue scenario
     """
 
-    def __init__(self, id=None, simulation_mode=None, goal=None, slot_set=None, act_set=None):
-        super(GOSimulatedUser, self).__init__(id, simulation_mode, goal)
+    def __init__(self, id=None, simulation_mode=None, goal_set=None, slot_set=None, act_set=None):
+        super(GOSimulatedUser, self).__init__(id, simulation_mode, goal_set)
 
         self.slot_set = slot_set
         self.act_set = act_set
@@ -96,8 +96,8 @@ class GORuleBasedUser(GOSimulatedUser):
     Class members:
     """
 
-    def __init__(self, id=None, simulation_mode=None, goal=None, slot_set=None, act_set=None):
-        super(GORuleBasedUser, self).__init__(id, simulation_mode, goal, slot_set, act_set)
+    def __init__(self, id=None, simulation_mode=None, goal_set=None, slot_set=None, act_set=None):
+        super(GORuleBasedUser, self).__init__(id, simulation_mode, goal_set, slot_set, act_set)
 
     def reset(self):
         # TODO
@@ -118,9 +118,9 @@ class GOModelBasedUser(GOSimulatedUser):
         - model_path: the path to save or load the model
     """
 
-    def __init__(self, id=None, simulation_mode=None, goal=None, slot_set=None, act_set=None, is_training=None,
+    def __init__(self, id=None, simulation_mode=None, goal_set=None, slot_set=None, act_set=None, is_training=None,
                  model_path=None):
-        super(GOModelBasedUser, self).__init__(id, simulation_mode, goal, slot_set, act_set)
+        super(GOModelBasedUser, self).__init__(id, simulation_mode, goal_set, slot_set, act_set)
 
         self.is_training = is_training
         self.model_path = model_path
