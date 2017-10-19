@@ -1,1 +1,5 @@
 sphinx >= 1.6.0
+numpy
+mkdocs
+python-markdown-math
+recommonmark
