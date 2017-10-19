@@ -20,7 +20,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 import core
 from core.dm import dialogue_system
 from core.agent import agents
-from core.env import environment
+from core.environment import environment
 from core.dst import state_tracker
 from core.user import users
 
@@ -40,7 +40,7 @@ PAGES = [
         'all_module_classes': [agents],
     },
     {
-        'page': 'env/overview.md',
+        'page': 'environment/overview.md',
         'all_module_classes': [environment],
     },
     {

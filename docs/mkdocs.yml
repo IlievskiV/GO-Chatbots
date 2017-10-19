@@ -13,7 +13,7 @@ pages:
 - Agents:
   - Overview: sources/agents/overview.md
 - Environment:
-  - Overview: sources/env/overview.md
+  - Overview: sources/environment/overview.md
 - Dialogue State Tracker:
   - Overview: sources/dst/overview.md
 - Users:

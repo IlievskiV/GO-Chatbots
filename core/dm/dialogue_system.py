@@ -4,7 +4,7 @@ Author: Vladimir Ilievski <ilievski.vladimir@live.com>
 """
 
 from core import constants as const
-from core.env.environment import GOEnv
+from core.environment.environment import GOEnv
 import core.agent.agents as agents
 from core.agent.processor import GOProcessor
 
@@ -16,7 +16,7 @@ class GODialogSys():
     # Class members: 
     
         - `agent`: the type of conversational agent. Default is None (temporarily).
-        - `env`: the environment with which the agent and user interact. Default is None (temporarily).
+        - `environment`: the environment with which the agent and user interact. Default is None (temporarily).
         - `act_set`: the set of all intents used in the dialogue.
         - `slot_set`: the set of all slots used in the dialogue.
         - `kb_path`: path to any knowledge base
