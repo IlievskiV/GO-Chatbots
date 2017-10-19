@@ -36,12 +36,30 @@ PAGES = [
         'all_module_classes': [dialogue_system],
     },
     {
+        'page': 'dm/dialogue_sys.md',
+        'classes': [dialogue_system.GODialogSys],
+        'functions': [
+            dialogue_system.GODialogSys.initialize,
+        ]
+    },
+    {
         'page': 'agents/overview.md',
         'all_module_classes': [agents],
     },
     {
         'page': 'environment/overview.md',
         'all_module_classes': [environment],
+    },
+    {
+        'page': 'environment/environment.md',
+        'classes': [environment.GOEnv],
+        'functions':[
+            environment.GOEnv.step,
+            environment.GOEnv.reset,
+            environment.GOEnv.close,
+            environment.GOEnv.seed,
+            environment.GOEnv.configure,
+        ],
     },
     {
         'page': 'dst/overview.md',

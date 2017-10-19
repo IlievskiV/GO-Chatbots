@@ -1,6 +1,7 @@
 """
 Author: Vladimir Ilievski <ilievski.vladimir@live.com>
 
+A Python file for the entire Goal-Oriented Dialogue System.
 """
 
 from core import constants as const
@@ -15,14 +16,14 @@ class GODialogSys():
     
     # Class members: 
     
-        - `agent`: the type of conversational agent. Default is None (temporarily).
-        - `environment`: the environment with which the agent and user interact. Default is None (temporarily).
-        - `act_set`: the set of all intents used in the dialogue.
-        - `slot_set`: the set of all slots used in the dialogue.
-        - `kb_path`: path to any knowledge base
-        - `agt_feasible_actions`: list of templates described as dictionaries, corresponding to each action the agent might take
+        - ** agent **: the type of conversational agent. Default is None (temporarily).
+        - ** environment **: the environment with which the agent and user interact. Default is None (temporarily).
+        - ** act_set **: the set of all intents used in the dialogue.
+        - ** slot_set **: the set of all slots used in the dialogue.
+        - ** kb_path **: path to any knowledge base
+        - ** agt_feasible_actions **: list of templates described as dictionaries, corresponding to each action the agent might take
                                 (dict to be specified)
-        - `max_nb_turns`: the maximal number of dialogue turns
+        - ** max_nb_turns **: the maximal number of dialogue turns
     
     """
 

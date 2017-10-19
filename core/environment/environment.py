@@ -29,24 +29,25 @@ class GOEnv(Env):
     
     # Class members:
     
-    From [rl.Env] class:
-        - reward_shape: the shape of the reward matrix
-        - action_space: the space of possible actions
-        - observation_space: the space of observations to ... (have to find the exact meaning)
+    From `rl.Env` class:
+    
+        - ** reward_shape **: the shape of the reward matrix
+        - ** action_space **: the space of possible actions
+        - ** observation_space **: the space of observations to ... (have to find the exact meaning)
     
     Own:
-        - simulation_mode: the mode of the simulation, semantic frame or natural language sentences
-        - is_training: flag indicating the training/testing mode
-        - max_nb_turns: 
-        - usr: a simulated or real user making a conversation with the agent
-        - state_tracker: the state tracker used for tracking the state of the dialogue.
-        - nlu_unit: the NLU unit for transforming the user utterance to a dialogue act
-        - nlg_unit: the NLG unit for transforming the agent's action to a natural language sentence
-        - act_set: the set of all dialogue acts (intents)
-        - slot_set: the set of all dialogue slots
-        - feasible_actions: list of templates described as dictionaries, corresponding to each action the agent might take
+    
+        - ** simulation_mode **: the mode of the simulation, semantic frame or natural language sentences
+        - ** is_training **: flag indicating the training/testing mode
+        - ** max_nb_turns **: the maximal number of allowed dialogue turns. Afterwards, the dialogue is considered failed
+        - ** usr **: a simulated or real user making a conversation with the agent
+        - ** state_tracker **: the state tracker used for tracking the state of the dialogue
+        - ** nlu_unit **: the NLU unit for transforming the user utterance to a dialogue act
+        - ** nlg_unit **: the NLG unit for transforming the agent's action to a natural language sentence
+        - ** act_set **: the set of all dialogue acts
+        - ** slot_set **: the set of all dialogue slots
+        - ** feasible_actions **: list of templates described as dictionaries, corresponding to each action the agent might take
                             (dict to be specified)
-        - max_nb_turns: the maximal number of dialogue turns
     """
 
     def __init__(self, simulation_mode=None, is_training=False, user_type_str="", user_path="", dst_type_str="",

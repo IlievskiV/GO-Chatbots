@@ -15,7 +15,7 @@ class GOKBHelper:
     """
 
     def __init__(self):
-        """Constructor of the [GOKBHelper] class"""
+        """Constructor of the `GOKBHelper` class"""
 
 
 # TODO

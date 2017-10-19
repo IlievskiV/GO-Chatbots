@@ -21,3 +21,20 @@ __Class members: __
 - ** max_nb_turns **: the maximal number of dialogue turns
 
 
+----
+
+<span style="float:right;">[[source]](https://github.com/matthiasplappert/keras-rl/blob/master/core/dm/dialogue_system.py#L98)</span>
+
+### initialize
+
+
+```python
+initialize(self)
+```
+
+
+
+Method for initializing the dialogue.
+
+:return: 
+

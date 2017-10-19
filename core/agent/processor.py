@@ -14,7 +14,8 @@ class GOProcessor(Processor):
     format for the agent.
     
     # Arguments:
-        - feasible_actions: all feasible actions the agent might take
+    
+        - ** feasible_actions **: all feasible actions the agent might take
     """
 
     def __init__(self, feasible_actions=None, *args, **kwargs):
