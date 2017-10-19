@@ -6,44 +6,26 @@ Author: Vladimir Ilievski <ilievski.vladimir@live.com>
 from rl.agents.dqn import DQNAgent
 
 
-class GOAgentInterface():
-    """
-    Abstract Base Class serving as an interface for all GO agents.
-    
-    # Class members:
-        - current_turn_nb: the number of the current dialogue turn.
-        - history: a list of the agent conversation history.
-    """
-
-    def __init__(self):
-        self.current_turn_nb = 0
-        self.history = []
-
-    def initialize(self):
-        """
-        Method for initializing the GO agent.
-        
-        :return: None
-        """
-
-        self.current_turn_nb = 0
-        self.history = []
-
-
-class GODQNAgent(DQNAgent, GOAgentInterface):
+class GODQNAgent(DQNAgent):
     """ Class for the Goal-Oriented agents with a DQN-based policy learning.
     
     This class is extending the class AbstractDQNAgent from keras-rl framework.
     This type of DQN agent should learn the policies of a dialogue in a given environment.
     
+    One agent action is represented as a dictionary having the exact same structure as the user action, which is:
+        - `diaact`: the act (intent) of the action
+        - `inform_slots`: the set of informed slots
+        - `request_slots`: the set of request slots
+        - `nl`: the natural language representation of the agent action
+    
     The following methods are implemented:
     
-    - `forward`
-    - `backward`
-    - `compile`
-    - `load_weights`
-    - `save_weights`
-    - `layers`
+        - `forward`
+        - `backward`
+        - `compile`
+        - `load_weights`
+        - `save_weights`
+        - `layers`
     
     
     # Class members:
@@ -70,10 +52,8 @@ class GODQNAgent(DQNAgent, GOAgentInterface):
         - enable_double_dqn: To enable the Double DQN technique. By default is on.
         - enable_dueling_network: To enble the Dueling DQN technique. Be default is off.
         - dueling_type: If the dueling is on, what type of it. The default is average.
-    Own: 
-        
-    
     """
 
     def __init__(self, *args, **kwargs):
         super(GODQNAgent).__init__(*args, **kwargs)
+

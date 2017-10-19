@@ -1,12 +1,14 @@
 """
 Author: Vladimir Ilievski <ilievski.vladimir@live.com>
 
+
+A Python file for the Goal-Oriented Dialogue State Tracker classes.
 """
 
 from core import constants as const
 
 import numpy as np
-
+import copy
 
 class GOStateTracker:
     """
@@ -53,6 +55,27 @@ class GOStateTracker:
         # TODO
         self.state_dim = 0
 
+    def __update_usr_action(self, usr_action):
+        """
+        Abstract private helper method to update the state tracker with the last user action.
+        
+        :param usr_action: the action user took
+        :return: 
+        """
+
+        raise NotImplementedError()
+
+    def __update_agt_action(self, agt_action):
+        """
+        Abstract private helper method to update the state tracker with the last agent action.
+        
+        :param agt_action: the action agent took
+        :return: 
+        """
+
+        raise NotImplementedError()
+
+
     def get_history(self):
         """
         Getter method to get the dialogue history.
@@ -78,6 +101,15 @@ class GOStateTracker:
 
         return self.history[-2] if len(self.history) > 1 else None
 
+    def reset(self):
+        """
+        Abstract method for resetting the dialogue state tracker, usually at the beginning of a new episode.
+        
+        :return: true if the resetting was successful
+        """
+
+        raise NotImplementedError()
+
     def produce_state(self):
         """
         Abstract method to produce a representation for the current dialogue state.
@@ -86,14 +118,14 @@ class GOStateTracker:
         """
         raise NotImplementedError()
 
-    def update(self, action):
+    def update(self, action=None, speaker=""):
         """
         Abstract method to update the state tracker with the last user or agent action.
         
         :param action: user or agent action
+        :param speaker: who took the action, the user or the agent
         :return: 
         """
-
         raise NotImplementedError()
 
 
@@ -225,8 +257,93 @@ class GORuleBasedStateTracker(GOStateTracker):
                 kb_binary_count_encoding[0, self.slot_set[slot]] = np.sum(kb_results_dict[slot] > 0.)
         return kb_binary_count_encoding
 
+    def __update_usr_action(self, usr_action):
+        """
+        Abstract method implementation.
+        """
+
+        # Iterate over the inform slots from the last user action and update the state tracker running record
+        for slot in usr_action[const.INFORM_SLOT_KEY].keys():
+            self.current_slots[const.INFORM_SLOT_KEY][slot] = usr_action[const.INFORM_SLOT_KEY][slot]
+            # if the current inform slot was in the requested slots in the past, delete it
+            if slot in self.current_slots[const.REQUEST_SLOT_KEY].keys():
+                del self.current_slots[const.REQUEST_SLOT_KEY][slot]
+
+        # Iterate over the request slots from the last user action and update the state tracker running record
+        for slot in usr_action[const.REQUEST_SLOT_KEY].keys():
+            if slot not in self.current_slots[const.REQUEST_SLOT_KEY].keys():
+                self.current_slots[const.REQUEST_SLOT_KEY][slot] = const.UNKNOWN_SLOT_VALUE
+
+        # Produce a record for the history and add the last user action in the history
+        new_history_record = {}
+        new_history_record[const.TURN_NB_KEY] = self.current_turn_nb
+        new_history_record[const.SPEAKER_TYPE_KEY] = const.USR_SPEAKER_VAL
+        new_history_record[const.DIA_ACT_KEY] = usr_action[const.DIA_ACT_KEY]
+        new_history_record[const.INFORM_SLOT_KEY] = usr_action[const.INFORM_SLOT_KEY]
+        new_history_record[const.REQUEST_SLOT_KEY] = usr_action[const.REQUEST_SLOT_KEY]
+
+        self.history.append(copy.deepcopy(new_history_record))
+
+        return True
+
+    def __update_agt_action(self, agt_action):
+        """
+        Abstract method implementation.
+        """
+        # Make a copy and call KB helper methods to fill in the values for the inform slots
+        agt_action_copy = copy.deepcopy(agt_action)
+        inform_slots_from_kb = None #TODO
+
+        # Iterate over the inform slots from the KB and update the state tracker running record
+        for slot in inform_slots_from_kb.keys():
+            self.current_slots[const.PROPOSED_SLOT_KEY][slot] = inform_slots_from_kb[slot]
+            self.current_slots[const.INFORM_SLOT_KEY] [slot] = inform_slots_from_kb[slot]
+            # if the current inform slot was in the requested slots in the past, delete it
+            if slot in self.current_slots[const.REQUEST_SLOT_KEY].keys():
+                del self.current_slots[const.REQUEST_SLOT_KEY][slot]
+
+        # Iterate over the request slots from the last agent action and update the state tracker running record
+        for slot in agt_action_copy[const.REQUEST_SLOT_KEY].keys():
+            if slot not in self.current_slots[const.AGENT_REQUESTED_SLOT_KEY].keys():
+                self.current_slots[const.AGENT_REQUESTED_SLOT_KEY][slot] = const.UNKNOWN_SLOT_VALUE
+
+        # Produce a record for the history and add the last agent action in the history
+        new_history_record = {}
+        new_history_record[const.TURN_NB_KEY] = self.current_turn_nb
+        new_history_record[const.SPEAKER_TYPE_KEY] = const.AGT_SPEAKER_VAL
+        new_history_record[const.DIA_ACT_KEY] = agt_action_copy[const.DIA_ACT_KEY]
+        new_history_record[const.INFORM_SLOT_KEY] = agt_action_copy[const.INFORM_SLOT_KEY]
+        new_history_record[const.REQUEST_SLOT_KEY] = agt_action_copy[const.REQUEST_SLOT_KEY]
+
+        self.history.append(copy.deepcopy(new_history_record))
+
+        return True
+
+    def reset(self):
+        """
+        Method to reset the rule-based dialogue state tracker. Overrides the super class method.
+        
+        :return: true if the resetting was successful, false otherwise
+        """
+
+        # clear the history
+        self.history = []
+
+        # clear the running record of filled slots
+        self.current_slots = {}
+        self.current_slots[const.INFORM_SLOT_KEY] = {}
+        self.current_slots[const.REQUEST_SLOT_KEY] = {}
+        self.current_slots[const.PROPOSED_SLOT_KEY] = {}
+        self.current_slots[const.AGENT_REQUESTED_SLOT_KEY] = {}
+
+        # set turn number to 0
+        self.current_turn_nb = 0
+
+        return True
+
     def produce_state(self):
         """
+        Abstract method implementation.
         Method to produce a representation for the current dialogue state. In this rule-based state tracker it includes:
             - one-hot encoding of the last user and the agent action intent
             - bag encoding of the last user and the agent action inform slots
@@ -289,12 +406,18 @@ class GORuleBasedStateTracker(GOStateTracker):
 
         return final_representation
 
-        # TODO
-        raise NotImplementedError()
+    def update(self, action=None, speaker=None):
 
-    def update(self, action):
-        # TODO
-        raise NotImplementedError()
+        # the function should be called proplerly
+        assert (not (action and speaker))
+
+        # increase the turn number for one
+        self.current_turn_nb += 1
+
+        if speaker == const.USR_SPEAKER_VAL:
+            return self.__update_usr_action(action)
+        else:
+            return self.__update_agt_action(action)
 
 
 class GOModelBasedStateTracker(GOStateTracker):
@@ -313,10 +436,28 @@ class GOModelBasedStateTracker(GOStateTracker):
         self.is_training = is_training
         self.model_path = model_path
 
+    def __update_usr_action(self, usr_action):
+        # TODO
+        raise NotImplementedError()
+
+    def __update_agt_action(self, agt_action):
+        # TODO
+        raise NotImplementedError()
+
+    def reset(self):
+        """
+        Method to reset the model-based dialogue state tracker. Overrides the super class method.
+
+        :return: true if the resetting was successful, false otherwise
+        """
+
+        # TODO
+        raise NotImplementedError()
+
     def produce_state(self):
         # TODO
         raise NotImplementedError()
 
-    def update(self, action):
+    def update(self, action=None, speaker=""):
         # TODO
         raise NotImplementedError()

@@ -6,6 +6,7 @@ Author: Vladimir Ilievski <ilievski.vladimir@live.com>
 from core import constants as const
 from core.env.environment import GOEnv
 import core.agent.agents as agents
+from core.agent.processor import GOProcessor
 
 
 class GODialogSys():
@@ -88,7 +89,8 @@ class GODialogSys():
         agent = None
 
         if agent_type_value == const.AGENT_TYPE_DQN:
-            agent = agents.GODQNAgent()
+            go_processor = GOProcessor(feasible_actions=self.agt_feasible_actions)
+            agent = agents.GODQNAgent(processor=go_processor)
 
         return agent
 
